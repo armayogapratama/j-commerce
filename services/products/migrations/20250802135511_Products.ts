@@ -7,8 +7,10 @@ CREATE TABLE IF NOT EXISTS products (
       description TEXT,
       price DECIMAL(10, 2) NOT NULL,
       stock INT DEFAULT 0,
+      status BOOLEAN DEFAULT TRUE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      deleted_at TIMESTAMP DEFAULT NULL
 );`;
 
 async function up(knex: Knex): Promise<void> {

@@ -1,3 +1,5 @@
+import axios = require("axios");
+
 const { GlobalResponse } = require("../globals/responses/res");
 const {
   productLists,
@@ -7,6 +9,7 @@ const {
   updateProduct,
   deleteProduct,
   stockUpdate,
+  softDelete,
 } = require("../services/product.service");
 
 class ProductController {
@@ -145,6 +148,52 @@ class ProductController {
           "Success",
           "Product stock updated successfully"
         )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async softDelete(req, reply) {
+    try {
+      const { id } = req.params;
+
+      const product = await productById(id);
+
+      if (!product) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      if (product.status === false) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      const response = await axios.get(
+        `${process.env.ORDER_URL}/api/orders/product-list/${id}`,
+        {
+          headers: {
+            // "Content-Type": "application/json",
+            Authorization: `${req.headers.authorization}`,
+          },
+        }
+      );
+
+      const order = response.data.data;
+
+      if (order) {
+        return reply.send(
+          GlobalResponse(
+            null,
+            "Error",
+            "Can not delete product because it has order"
+          )
+        );
+      }
+
+      const productDelete = await softDelete(id);
+
+      reply.send(
+        GlobalResponse(productDelete, "Success", "Product deleted successfully")
       );
     } catch (error) {
       console.log(error);
