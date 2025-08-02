@@ -13,7 +13,7 @@ class ProductController {
     try {
       const products = await productLists();
 
-      reply.send(GlobalResponse(products, "Success", "Hello"));
+      reply.send(GlobalResponse(products, "Success", "Success get products"));
     } catch (error) {
       console.log(error);
     }
