@@ -3,6 +3,8 @@ const {
   userByEmail,
   forgotPassword,
   resetPassword,
+  createAdmin,
+  userById,
 } = require("../service/user.service");
 const { signPassword, verifyPassword } = require("../helpers/hash");
 const { signToken } = require("../helpers/jwt");
@@ -28,6 +30,31 @@ class UserController {
 
       reply.send(
         GlobalResponse(user, "Success", "User registered successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async userByEmail(req, reply) {
+    try {
+      const { email } = req.params;
+
+      const user = await userByEmail(email);
+
+      reply.send(
+        GlobalResponse(
+          {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+          },
+          "Success",
+          "Success get data"
+        )
       );
     } catch (error) {
       console.log(error);
@@ -135,6 +162,67 @@ class UserController {
       }
 
       reply.send(GlobalResponse(user, "Success", "Token decoded successfully"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async registerAdmin(req, reply) {
+    try {
+      const { name, email, password, token } = req.body;
+
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+      if (!payload) {
+        return GlobalResponse(null, "Error", "Token is not valid");
+      }
+
+      const user = await userByEmail(payload.email);
+
+      if (user) {
+        if (user.role === "admin") {
+          return GlobalResponse(null, "Error", "User already have been admin");
+        }
+      }
+
+      const admin = await createAdmin({
+        name,
+        email,
+        password: signPassword(password),
+      });
+
+      reply.send(
+        GlobalResponse(admin, "Success", "Admin registered successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async userById(req, reply) {
+    try {
+      const { id } = req.params;
+
+      const user = await userById(id);
+
+      if (!user) {
+        return reply.send(GlobalResponse(null, "Error", "User not found"));
+      }
+
+      reply.send(
+        GlobalResponse(
+          {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+          },
+          "Success",
+          "Success get data"
+        )
+      );
     } catch (error) {
       console.log(error);
     }

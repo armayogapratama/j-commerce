@@ -43,6 +43,39 @@ const createUser = async ({
   }
 };
 
+const createAdmin = async ({
+  name,
+  email,
+  password,
+}: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const user = await db
+      .insert({
+        name,
+        email,
+        password,
+        role: "admin",
+      })
+      .into("users")
+      .returning({
+        id: "id",
+        name: "name",
+        email: "email",
+        role: "role",
+        created_at: "created_at",
+        updated_at: "updated_at",
+      });
+
+    return user[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const userByEmail = async (email: { email: string }) => {
   try {
     const user = await db.select("*").from("users").where({ email: email });
@@ -56,9 +89,9 @@ const userByEmail = async (email: { email: string }) => {
 
 const userById = async (id: { id: number }) => {
   try {
-    const user = await db.select("*").from("users").where({ id }).first();
+    const user = await db.select("*").from("users").where({ id });
 
-    return user;
+    return user[0];
   } catch (error) {
     console.log(error);
   }
@@ -116,6 +149,7 @@ const resetPassword = async ({
 
 module.exports = {
   createUser,
+  createAdmin,
   userByEmail,
   userById,
   forgotPassword,
