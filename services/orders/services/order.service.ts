@@ -33,7 +33,22 @@ const orderByUser = async (user_id: { user_id: number }) => {
   }
 };
 
+const orderByProductId = async (product_id: { product_id: number }) => {
+  try {
+    const order = await db
+      .select("*")
+      .from("orders")
+      .where({ product_id })
+      .returning("*");
+
+    return order[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createOrder,
   orderByUser,
+  orderByProductId,
 };

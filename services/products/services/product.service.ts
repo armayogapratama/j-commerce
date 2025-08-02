@@ -115,6 +115,23 @@ const stockUpdate = async (body: { id: number; stock: number }) => {
   }
 };
 
+const softDelete = async (id: { id: number }) => {
+  try {
+    const product = await db
+      .update({
+        status: false,
+        deleted_at: new Date(),
+      })
+      .into("products")
+      .where({ id })
+      .returning("*");
+
+    return product[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   productLists,
   createProduct,
@@ -123,4 +140,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   stockUpdate,
+  softDelete,
 };

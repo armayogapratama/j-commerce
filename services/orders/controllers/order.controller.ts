@@ -1,7 +1,11 @@
 import axios = require("axios");
 
 const { GlobalResponse } = require("../globals/responses/res");
-const { createOrder, orderByUser } = require("../services/order.service");
+const {
+  createOrder,
+  orderByUser,
+  orderByProductId,
+} = require("../services/order.service");
 
 class OrderController {
   static async orderLists(req, reply) {
@@ -65,6 +69,22 @@ class OrderController {
       const { id: user_id } = req.user;
 
       const order = await orderByUser(user_id);
+
+      if (!order) {
+        return reply.send(GlobalResponse(null, "Error", "Order not found"));
+      }
+
+      reply.send(GlobalResponse(order, "Success", "Success get data"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async orderByProductId(req, reply) {
+    try {
+      const { id: product_id } = req.params;
+
+      const order = await orderByProductId(product_id);
 
       if (!order) {
         return reply.send(GlobalResponse(null, "Error", "Order not found"));

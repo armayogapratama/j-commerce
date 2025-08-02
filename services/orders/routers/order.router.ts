@@ -4,6 +4,7 @@ const {
   orderLists,
   createOrder,
   orderByUser,
+  orderByProductId,
 } = require("../controllers/order.controller");
 const { GlobalResponse } = require("../globals/responses/res");
 
@@ -50,6 +51,7 @@ async function router(fastify, options) {
   fastify.get("/api/orders/lists", orderLists);
   fastify.post("/api/orders/create", createOrder);
   fastify.get("/api/orders/user-lists", orderByUser);
+  fastify.get("/api/orders/product-list/:id", orderByProductId);
 }
 
 module.exports = router;
