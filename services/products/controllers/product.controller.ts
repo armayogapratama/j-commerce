@@ -6,6 +6,7 @@ const {
   productById,
   updateProduct,
   deleteProduct,
+  stockUpdate,
 } = require("../services/product.service");
 
 class ProductController {
@@ -115,6 +116,35 @@ class ProductController {
 
       reply.send(
         GlobalResponse(productDelete, "Success", "Product deleted successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async productStockUpdate(req, reply) {
+    try {
+      const { stock, id } = req.body;
+
+      const product = await productById(id);
+
+      if (!product) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      const productUpdate = await stockUpdate({
+        id,
+        stock,
+      });
+
+      console.log(productUpdate, "productUpdate");
+
+      reply.send(
+        GlobalResponse(
+          productUpdate,
+          "Success",
+          "Product stock updated successfully"
+        )
       );
     } catch (error) {
       console.log(error);

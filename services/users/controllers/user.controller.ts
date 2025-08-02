@@ -73,6 +73,7 @@ class UserController {
 
       const accessToken = await signToken({
         id: user.id,
+        name: user.name,
         email: user.email,
         role: user.role,
       });

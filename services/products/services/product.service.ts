@@ -54,9 +54,9 @@ const productByName = async (name: { name: string }) => {
 
 const productById = async (id: { id: number }) => {
   try {
-    const product = await db.select("*").from("products").where({ id }).first();
+    const product = await db.select("*").from("products").where({ id });
 
-    return product;
+    return product[0];
   } catch (error) {
     console.log(error);
   }
@@ -97,6 +97,24 @@ const deleteProduct = async (id: { id: number }) => {
   }
 };
 
+const stockUpdate = async (body: { id: number; stock: number }) => {
+  try {
+    const { id, ...res } = body;
+
+    console.log(body, "ini body product");
+
+    const product = await db
+      .update({ ...res })
+      .into("products")
+      .where({ id })
+      .returning("*");
+
+    return product[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   productLists,
   createProduct,
@@ -104,4 +122,5 @@ module.exports = {
   productById,
   updateProduct,
   deleteProduct,
+  stockUpdate,
 };
