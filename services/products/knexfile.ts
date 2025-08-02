@@ -10,7 +10,7 @@ const config: { [key: string]: Knex.Config } = {
       port: process.env.DB_PORT ? +process.env.DB_PORT : 5432,
       user: process.env.DB_USER || "postgres",
       password: process.env.DB_PASSWORD || "postgres",
-      database: process.env.DB_NAME || "jcommerceUser",
+      database: process.env.DB_NAME || "jcommerceProduct",
     },
     pool: {
       min: 2,

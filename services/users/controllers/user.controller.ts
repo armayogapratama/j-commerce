@@ -14,7 +14,7 @@ class UserController {
     try {
       const { email, password, name } = req.body;
 
-      const userExists = await userByEmail({ email });
+      const userExists = await userByEmail(email);
 
       if (userExists) {
         return reply.send(GlobalResponse(null, "Error", "User already exists"));
@@ -38,7 +38,7 @@ class UserController {
     try {
       const { email, password } = req.body;
 
-      const user = await userByEmail({ email });
+      const user = await userByEmail(email);
 
       if (!user || !verifyPassword(password, user.password)) {
         return reply.send(GlobalResponse(null, "Error", "Invalid credentials"));
@@ -62,7 +62,7 @@ class UserController {
     try {
       const { email } = req.body;
 
-      const user = await userByEmail({ email });
+      const user = await userByEmail(email);
 
       if (!user) {
         return reply.send(GlobalResponse(null, "Error", "User not found"));

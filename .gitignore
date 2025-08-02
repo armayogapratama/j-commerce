@@ -2,3 +2,4 @@ docker-compose.yml
 services/*/.env
 services/*/node_modules
 services/*/package-lock.json
+.env

@@ -46,15 +46,9 @@ const createUser = async ({
 const userByEmail = async (email: { email: string }) => {
   try {
     const user = await db.select("*").from("users").where({ email: email });
+    console.log(user, "di service");
 
-    return {
-      id: user[0].id,
-      name: user[0].name,
-      email: user[0].email,
-      role: user[0].role,
-      created_at: user[0].created_at,
-      updated_at: user[0].updated_at,
-    };
+    return user[0];
   } catch (error) {
     console.log(error);
   }
