@@ -1,0 +1,125 @@
+const { GlobalResponse } = require("../globals/responses/res");
+const {
+  productLists,
+  productByName,
+  createProduct,
+  productById,
+  updateProduct,
+  deleteProduct,
+} = require("../services/product.service");
+
+class ProductController {
+  static async productList(req, reply) {
+    try {
+      const products = await productLists();
+
+      reply.send(GlobalResponse(products, "Success", "Hello"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async productCreate(req, reply) {
+    try {
+      const { name, description, price, stock } = req.body;
+
+      const product = await productByName(name);
+
+      if (product) {
+        return reply.send(
+          GlobalResponse(null, "Error", "Product already exists")
+        );
+      }
+
+      const newProduct = await createProduct({
+        name,
+        description,
+        price,
+        stock,
+      });
+
+      reply.send(
+        GlobalResponse(newProduct, "Success", "Product created successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async productDetail(req, reply) {
+    try {
+      const { id } = req.params;
+
+      const product = await productById(id);
+
+      if (!product) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      reply.send(GlobalResponse(product, "Success", "Hello"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async productUpdate(req, reply) {
+    try {
+      const { id } = req.params;
+      const { name, description, price, stock } = req.body;
+
+      const product = await productById(id);
+
+      if (!product) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      const productExists = await productByName(name);
+
+      if (productExists) {
+        return reply.send(
+          GlobalResponse(
+            null,
+            "Error",
+            "Product already exists, please change product name and try again"
+          )
+        );
+      }
+
+      const productUpdate = await updateProduct({
+        id,
+        name,
+        description,
+        price,
+        stock,
+      });
+
+      reply.send(
+        GlobalResponse(productUpdate, "Success", "Product updated successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async productDelete(req, reply) {
+    try {
+      const { id } = req.params;
+
+      const product = await productById(id);
+
+      if (!product) {
+        return reply.send(GlobalResponse(null, "Error", "Product not found"));
+      }
+
+      const productDelete = await deleteProduct(id);
+
+      reply.send(
+        GlobalResponse(productDelete, "Success", "Product deleted successfully")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+module.exports = ProductController;
