@@ -1,18 +1,14 @@
 import axios = require("axios");
-
-const {
-  invitationLists,
-  invitationCreate,
-} = require("../controllers/invitation.controller");
 const { verifyToken } = require("../helpers/jwt");
+const {
+  orderLists,
+  createOrder,
+  orderByUser,
+} = require("../controllers/order.controller");
 const { GlobalResponse } = require("../globals/responses/res");
 
 async function router(fastify, options) {
   fastify.addHook("preHandler", async (request, reply) => {
-    if (request.routerPath === "/api/invitations/lists") {
-      return;
-    }
-
     try {
       const authHeader = request.headers.authorization;
 
@@ -33,7 +29,7 @@ async function router(fastify, options) {
       const payload = verifyToken(accessToken);
 
       const user = await axios.get(
-        `${process.env.BASE_URL}/api/users/user/${payload.id}`
+        `${process.env.USER_URL}/api/users/user/${payload.id}`
       );
 
       const response = user.data.data;
@@ -51,8 +47,9 @@ async function router(fastify, options) {
     }
   });
 
-  fastify.get("/api/invitations/lists", invitationLists);
-  fastify.post("/api/invitations/create", invitationCreate);
+  fastify.get("/api/orders/lists", orderLists);
+  fastify.post("/api/orders/create", createOrder);
+  fastify.get("/api/orders/user-lists", orderByUser);
 }
 
 module.exports = router;
