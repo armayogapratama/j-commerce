@@ -5,7 +5,10 @@ const router = require("./routers/user.router");
 
 const server = fastify();
 
-server.register(cors, { origin: "*" });
+server.register(cors, {
+  origin: "*",
+  methods: ["GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"],
+});
 server.register(router);
 
 server.listen({ port: 3001 }, (err, address) => {
