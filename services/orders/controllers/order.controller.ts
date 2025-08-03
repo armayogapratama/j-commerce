@@ -11,7 +11,7 @@ const {
 class OrderController {
   static async orderLists(req, reply) {
     try {
-      reply.send(GlobalResponse(null, "Success", "Success get data"));
+      reply.send(GlobalResponse(null, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +58,7 @@ class OrderController {
       });
 
       reply.send(
-        GlobalResponse(order, "Success", "Order created successfully")
+        GlobalResponse(order, "Order created successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -75,7 +75,7 @@ class OrderController {
         return reply.send(GlobalResponse(null, "Error", "Order not found"));
       }
 
-      reply.send(GlobalResponse(order, "Success", "Success get data"));
+      reply.send(GlobalResponse(order, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +91,7 @@ class OrderController {
         return reply.send(GlobalResponse(null, "Error", "Order not found"));
       }
 
-      reply.send(GlobalResponse(order, "Success", "Success get data"));
+      reply.send(GlobalResponse(order, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }

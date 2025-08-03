@@ -147,6 +147,16 @@ const resetPassword = async ({
   }
 };
 
+const userByRole = async (role: string) => {
+  try {
+    const user = await db.select("*").from("users").where({ role });
+
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createUser,
   createAdmin,
@@ -154,4 +164,5 @@ module.exports = {
   userById,
   forgotPassword,
   resetPassword,
+  userByRole,
 };

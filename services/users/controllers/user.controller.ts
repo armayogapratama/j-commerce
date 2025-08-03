@@ -5,6 +5,7 @@ const {
   resetPassword,
   createAdmin,
   userById,
+  userByRole,
 } = require("../service/user.service");
 const { signPassword, verifyPassword } = require("../helpers/hash");
 const { signToken } = require("../helpers/jwt");
@@ -29,7 +30,7 @@ class UserController {
       });
 
       reply.send(
-        GlobalResponse(user, "Success", "User registered successfully")
+        GlobalResponse(user, "User registered successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -52,8 +53,8 @@ class UserController {
             created_at: user.created_at,
             updated_at: user.updated_at,
           },
-          "Success",
-          "Success get data"
+          "Success get data",
+          "Success"
         )
       );
     } catch (error) {
@@ -79,7 +80,7 @@ class UserController {
       });
 
       reply.send(
-        GlobalResponse(accessToken, "Success", "User logged in successfully")
+        GlobalResponse(accessToken, "User logged in successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -107,8 +108,8 @@ class UserController {
       reply.send(
         GlobalResponse(
           { email, link: resetLink },
-          "Success",
-          "Reset password link sent successfully"
+          "Reset password link sent successfully",
+          "Success"
         )
       );
     } catch (error) {
@@ -139,7 +140,7 @@ class UserController {
       const userUpdate = await resetPassword({ password, email: user.email });
 
       reply.send(
-        GlobalResponse(userUpdate, "Success", "Password reset successfully")
+        GlobalResponse(userUpdate, "Password reset successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -162,7 +163,7 @@ class UserController {
         return GlobalResponse(null, "Error", "User not found");
       }
 
-      reply.send(GlobalResponse(user, "Success", "Token decoded successfully"));
+      reply.send(GlobalResponse(user, "Token decoded successfully", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -193,7 +194,7 @@ class UserController {
       });
 
       reply.send(
-        GlobalResponse(admin, "Success", "Admin registered successfully")
+        GlobalResponse(admin, "Admin registered successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -205,6 +206,35 @@ class UserController {
       const { id } = req.params;
 
       const user = await userById(id);
+
+      if (!user) {
+        return reply.send(GlobalResponse(null, "Error", "User not found"));
+      }
+
+      reply.send(
+        GlobalResponse(
+          {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+          },
+          "Success get data",
+          "Success"
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async userByRole(req, reply) {
+    try {
+      const { role } = req.params;
+
+      const user = await userByRole(role);
 
       if (!user) {
         return reply.send(GlobalResponse(null, "Error", "User not found"));
