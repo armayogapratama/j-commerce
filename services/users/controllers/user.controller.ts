@@ -240,20 +240,7 @@ class UserController {
         return reply.send(GlobalResponse(null, "Error", "User not found"));
       }
 
-      reply.send(
-        GlobalResponse(
-          {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-          },
-          "Success get data",
-          "Success"
-        )
-      );
+      reply.send(GlobalResponse(user, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }
