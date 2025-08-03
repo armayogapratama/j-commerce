@@ -47,8 +47,19 @@ const orderByProductId = async (product_id: { product_id: number }) => {
   }
 };
 
+const orderById = async (id: { id: number }) => {
+  try {
+    const order = await db.select("*").from("orders").where({ id });
+
+    return order[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createOrder,
   orderByUser,
   orderByProductId,
+  orderById,
 };

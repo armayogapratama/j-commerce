@@ -1,0 +1,154 @@
+version: "3"
+services:
+  user_db:
+    image: 
+    container_name: 
+    restart: always
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: 
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  users:
+    build: ./services/users
+    environment:
+      - DB_HOST=
+      - DB_PORT=
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
+      - JWT_SECRET=
+      - EMAIL=
+      - PASSWORD=
+    ports:
+      - "3001:3001"
+    depends_on:
+      - user_db
+
+  product_db:
+    image: 
+    container_name: 
+    restart: always
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: 
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  products:
+    build: ./services/products
+    environment:
+      - DB_HOST=
+      - DB_PORT=
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
+      - JWT_SECRET=
+      - USER_URL=
+      - ORDER_URL=
+    ports:
+      - "3002:3002"
+    depends_on:
+      - product_db
+
+  invitation_db:
+    image: 
+    container_name: 
+    restart: always
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: 
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  invitations:
+    build: ./services/users
+    environment:
+      - DB_HOST=
+      - DB_PORT=
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
+      - JWT_SECRET=
+      - BASE_URL=
+      - EMAIL=
+      - PASSWORD=
+    ports:
+      - "3003:3003"
+    depends_on:
+      - invitation_db
+
+  order_db:
+    image: 
+    container_name: 
+    restart: always
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD:
+      POSTGRES_DB:
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  orders:
+    build: ./services/users
+    environment:
+      - DB_HOST=
+      - DB_PORT=
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
+      - JWT_SECRET=
+      - USER_URL=
+      - PRODUCT_URL=
+    ports:
+      - "3004:3004"
+    depends_on:
+      - order_db
+
+  payment_db:
+    image: 
+    container_name: 
+    restart: always
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      POSTGRES_DB:
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  payments:
+    build: ./services/users
+    environment:
+      - DB_HOST=
+      - DB_PORT=
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
+      - JWT_SECRET=
+      - EMAIL=
+      - PASSWORD=
+      - CLIENT_KEY=
+      - SERVER_KEY=
+      - USER_URL=
+      - ORDER_URL=
+    ports:
+      - "3005:3005"
+    depends_on:
+      - payment_db
+
+volumes:
+  postgres_data:
