@@ -151,7 +151,25 @@ const userByRole = async (role: string) => {
   try {
     const user = await db.select("*").from("users").where({ role });
 
-    return user;
+    return user.map(
+      (item: {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+        created_at: Date;
+        updated_at: Date;
+      }) => {
+        return {
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          role: item.role,
+          created_at: item.created_at,
+          updated_at: item.updated_at,
+        };
+      }
+    );
   } catch (error) {
     console.log(error);
   }
