@@ -8,6 +8,12 @@ const server = fastify();
 server.register(cors, {
   origin: "*",
   methods: ["GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Cache-Control",
+  ],
 });
 server.register(router);
 
