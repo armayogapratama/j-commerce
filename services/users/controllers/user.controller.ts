@@ -220,8 +220,8 @@ class UserController {
             created_at: user.created_at,
             updated_at: user.updated_at,
           },
-          "Success",
-          "Success get data"
+          "Success get data",
+          "Success"
         )
       );
     } catch (error) {

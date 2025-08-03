@@ -5,6 +5,7 @@ const {
   createOrder,
   orderByUser,
   orderByProductId,
+  orderById,
 } = require("../services/order.service");
 
 class OrderController {
@@ -91,6 +92,26 @@ class OrderController {
       }
 
       reply.send(GlobalResponse(order, "Success", "Success get data"));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async orderById(req, reply) {
+    try {
+      const { id } = req.params;
+
+      console.log(id, "id order");
+
+      const order = await orderById(id);
+
+      console.log(order, "order data di order");
+
+      if (!order) {
+        return reply.send(GlobalResponse(null, "Error", "Order not found"));
+      }
+
+      reply.send(GlobalResponse(order, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }
