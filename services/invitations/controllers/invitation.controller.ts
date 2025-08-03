@@ -12,7 +12,7 @@ class InvitationController {
     try {
       const invitations = await invitationLists();
 
-      reply.send(GlobalResponse(invitations, "Success", "Success get data"));
+      reply.send(GlobalResponse(invitations, "Success get data", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -33,8 +33,8 @@ class InvitationController {
             email: email,
             token: token,
           },
-          "Success",
-          "Invitation sent successfully"
+          "Invitation sent successfully",
+          "Success"
         )
       );
     } catch (error) {

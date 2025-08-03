@@ -17,7 +17,7 @@ class ProductController {
     try {
       const products = await productLists();
 
-      reply.send(GlobalResponse(products, "Success", "Success get products"));
+      reply.send(GlobalResponse(products, "Success get products", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +43,7 @@ class ProductController {
       });
 
       reply.send(
-        GlobalResponse(newProduct, "Success", "Product created successfully")
+        GlobalResponse(newProduct, "Product created successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -60,7 +60,7 @@ class ProductController {
         return reply.send(GlobalResponse(null, "Error", "Product not found"));
       }
 
-      reply.send(GlobalResponse(product, "Success", "Hello"));
+      reply.send(GlobalResponse(product, "Success get product", "Success"));
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +98,7 @@ class ProductController {
       });
 
       reply.send(
-        GlobalResponse(productUpdate, "Success", "Product updated successfully")
+        GlobalResponse(productUpdate, "Product updated successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -118,7 +118,7 @@ class ProductController {
       const productDelete = await deleteProduct(id);
 
       reply.send(
-        GlobalResponse(productDelete, "Success", "Product deleted successfully")
+        GlobalResponse(productDelete, "Product deleted successfully", "Success")
       );
     } catch (error) {
       console.log(error);
@@ -145,8 +145,8 @@ class ProductController {
       reply.send(
         GlobalResponse(
           productUpdate,
-          "Success",
-          "Product stock updated successfully"
+          "Product stock updated successfully",
+          "Success"
         )
       );
     } catch (error) {
@@ -193,7 +193,7 @@ class ProductController {
       const productDelete = await softDelete(id);
 
       reply.send(
-        GlobalResponse(productDelete, "Success", "Product deleted successfully")
+        GlobalResponse(productDelete, "Product deleted successfully", "Success")
       );
     } catch (error) {
       console.log(error);

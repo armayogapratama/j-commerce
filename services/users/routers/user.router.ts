@@ -7,6 +7,7 @@ const {
   userByEmail,
   registerAdmin,
   userById,
+  userByRole,
 } = require("../controllers/user.controller");
 
 async function router(fastify, options) {
@@ -18,6 +19,7 @@ async function router(fastify, options) {
   fastify.put("/api/users/reset-password", resetPassword);
   fastify.get("/api/users/user-email/:email", userByEmail);
   fastify.get("/api/users/user/:id", userById);
+  fastify.get("/api/users/user-role/:role", userByRole);
 }
 
 module.exports = router;
